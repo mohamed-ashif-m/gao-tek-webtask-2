@@ -74,74 +74,17 @@ class AdvancedCounter {
     }
 
     bindEvents() {
-        // ENHANCED BUTTON LOGIC - Multiple approaches to ensure buttons work on all screen sizes
+        // MOBILE-FOCUSED BUTTON LOGIC - Specifically designed for small screens
+        console.log('Setting up mobile-optimized button events...');
         
-        // Method 1: Direct event listeners with enhanced styling
-        if (this.increaseBtn) {
-            console.log('Adding click listener to increase button');
-            
-            // Remove any existing listeners
-            this.increaseBtn.replaceWith(this.increaseBtn.cloneNode(true));
-            this.increaseBtn = document.getElementById('increaseButton');
-            
-            this.increaseBtn.addEventListener('click', (e) => {
-                console.log('Increase button clicked!', e);
-                e.preventDefault();
-                e.stopPropagation();
-                this.increase();
-            });
-            
-            // Additional event types for better compatibility
-            this.increaseBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.increase();
-            });
-            
-            // Ensure button is clickable on all screen sizes
-            this.increaseBtn.style.pointerEvents = 'auto';
-            this.increaseBtn.style.cursor = 'pointer';
-            this.increaseBtn.style.zIndex = '999';
-            this.increaseBtn.style.position = 'relative';
-            this.increaseBtn.style.userSelect = 'none';
-            this.increaseBtn.style.webkitUserSelect = 'none';
-            this.increaseBtn.style.touchAction = 'manipulation';
-        } else {
-            console.error('Increase button not found!');
-        }
+        // Method 1: Multiple event binding for maximum compatibility on mobile
+        this.bindButtonEvents();
         
-        if (this.decreaseBtn) {
-            console.log('Adding click listener to decrease button');
-            
-            // Remove any existing listeners
-            this.decreaseBtn.replaceWith(this.decreaseBtn.cloneNode(true));
-            this.decreaseBtn = document.getElementById('decreaseButton');
-            
-            this.decreaseBtn.addEventListener('click', (e) => {
-                console.log('Decrease button clicked!', e);
-                e.preventDefault();
-                e.stopPropagation();
-                this.decrease();
-            });
-            
-            // Additional event types for better compatibility
-            this.decreaseBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.decrease();
-            });
-            
-            // Ensure button is clickable on all screen sizes
-            this.decreaseBtn.style.pointerEvents = 'auto';
-            this.decreaseBtn.style.cursor = 'pointer';
-            this.decreaseBtn.style.zIndex = '999';
-            this.decreaseBtn.style.position = 'relative';
-            this.decreaseBtn.style.userSelect = 'none';
-            this.decreaseBtn.style.webkitUserSelect = 'none';
-            this.decreaseBtn.style.touchAction = 'manipulation';
-        } else {
-            console.error('Decrease button not found!');
-        }
+        // Method 2: Global event delegation for mobile
+        this.setupGlobalEventHandlers();
+        
+        // Method 3: Mobile-specific touch handlers
+        this.setupMobileTouchHandlers();
         
         // Custom input (optional)
         if (this.addCustomBtn) {
@@ -257,44 +200,223 @@ class AdvancedCounter {
         const buttons = [this.increaseBtn, this.decreaseBtn];
         buttons.forEach(button => {
             if (button) {
-                // Force clickable styles
-                button.style.setProperty('pointer-events', 'auto', 'important');
-                button.style.setProperty('cursor', 'pointer', 'important');
-                button.style.setProperty('z-index', '9999', 'important');
-                button.style.setProperty('position', 'relative', 'important');
-                button.style.setProperty('display', 'flex', 'important');
-                button.style.setProperty('user-select', 'none', 'important');
-                button.style.setProperty('-webkit-user-select', 'none', 'important');
-                button.style.setProperty('-moz-user-select', 'none', 'important');
-                button.style.setProperty('-ms-user-select', 'none', 'important');
-                button.style.setProperty('touch-action', 'manipulation', 'important');
-                button.style.setProperty('outline', 'none', 'important');
+                // Apply comprehensive mobile-friendly styles
+                this.applyMobileButtonStyles(button);
                 
-                // Ensure children don't block clicks
-                const children = button.querySelectorAll('*');
-                children.forEach(child => {
-                    child.style.setProperty('pointer-events', 'none', 'important');
-                });
+                // Additional mobile-specific fixes
+                button.style.setProperty('isolation', 'isolate', 'important');
+                button.style.setProperty('transform', 'translateZ(0)', 'important');
+                button.style.setProperty('backface-visibility', 'hidden', 'important');
             }
         });
         
-        console.log('Button styles enforced for all screen sizes');
+        console.log('Mobile-optimized button styles enforced for all screen sizes');
     }
     
     startButtonMonitoring() {
-        // Monitor buttons every 2 seconds to ensure they remain clickable
+        // More frequent monitoring for mobile devices (every 500ms)
         setInterval(() => {
             this.ensureButtonsAreClickable();
-        }, 2000);
+            // Re-bind events if buttons seem unresponsive
+            this.bindButtonEvents();
+        }, 500);
         
-        // Also check when window is resized
-        window.addEventListener('resize', () => {
-            setTimeout(() => {
-                this.ensureButtonsAreClickable();
-            }, 100);
+        // Check on various mobile events
+        const mobileEvents = ['resize', 'orientationchange', 'scroll', 'touchstart', 'focus', 'blur'];
+        mobileEvents.forEach(eventType => {
+            window.addEventListener(eventType, () => {
+                setTimeout(() => {
+                    this.ensureButtonsAreClickable();
+                }, 50);
+            });
         });
         
-        console.log('Button monitoring started');
+        // Special handling for viewport changes on mobile
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                setTimeout(() => {
+                    this.ensureButtonsAreClickable();
+                    this.bindButtonEvents();
+                }, 100);
+            });
+        }
+        
+        console.log('Enhanced mobile button monitoring started');
+    }
+    
+    bindButtonEvents() {
+        // Enhanced button binding specifically for small screens
+        console.log('Binding button events for mobile compatibility...');
+        
+        if (this.increaseBtn) {
+            // Clear all existing event listeners by cloning
+            const newIncreaseBtn = this.increaseBtn.cloneNode(true);
+            this.increaseBtn.parentNode.replaceChild(newIncreaseBtn, this.increaseBtn);
+            this.increaseBtn = newIncreaseBtn;
+            
+            // Multiple event types for maximum mobile compatibility
+            const increaseHandler = (e) => {
+                console.log('Mobile increase handler triggered:', e.type);
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                this.increase();
+            };
+            
+            this.increaseBtn.addEventListener('click', increaseHandler, { passive: false });
+            this.increaseBtn.addEventListener('touchend', increaseHandler, { passive: false });
+            this.increaseBtn.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+            this.increaseBtn.addEventListener('mousedown', increaseHandler, { passive: false });
+            
+            // Force mobile-friendly styles
+            this.applyMobileButtonStyles(this.increaseBtn);
+        }
+        
+        if (this.decreaseBtn) {
+            // Clear all existing event listeners by cloning
+            const newDecreaseBtn = this.decreaseBtn.cloneNode(true);
+            this.decreaseBtn.parentNode.replaceChild(newDecreaseBtn, this.decreaseBtn);
+            this.decreaseBtn = newDecreaseBtn;
+            
+            // Multiple event types for maximum mobile compatibility
+            const decreaseHandler = (e) => {
+                console.log('Mobile decrease handler triggered:', e.type);
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                this.decrease();
+            };
+            
+            this.decreaseBtn.addEventListener('click', decreaseHandler, { passive: false });
+            this.decreaseBtn.addEventListener('touchend', decreaseHandler, { passive: false });
+            this.decreaseBtn.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+            this.decreaseBtn.addEventListener('mousedown', decreaseHandler, { passive: false });
+            
+            // Force mobile-friendly styles
+            this.applyMobileButtonStyles(this.decreaseBtn);
+        }
+    }
+    
+    setupGlobalEventHandlers() {
+        // Aggressive global event capture for mobile devices
+        console.log('Setting up global mobile event handlers...');
+        
+        const handleButtonClick = (e) => {
+            const target = e.target;
+            
+            // Check for increase button (including nested elements)
+            if (target.id === 'increaseButton' || 
+                target.closest('#increaseButton') ||
+                target.parentElement?.id === 'increaseButton' ||
+                target.classList.contains('increase-btn') ||
+                target.closest('.increase-btn')) {
+                console.log('Global increase handler triggered');
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                this.increase();
+                return false;
+            }
+            
+            // Check for decrease button (including nested elements)
+            if (target.id === 'decreaseButton' || 
+                target.closest('#decreaseButton') ||
+                target.parentElement?.id === 'decreaseButton' ||
+                target.classList.contains('decrease-btn') ||
+                target.closest('.decrease-btn')) {
+                console.log('Global decrease handler triggered');
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                this.decrease();
+                return false;
+            }
+        };
+        
+        // Add multiple global event types
+        document.addEventListener('click', handleButtonClick, { capture: true, passive: false });
+        document.addEventListener('touchend', handleButtonClick, { capture: true, passive: false });
+        document.addEventListener('mouseup', handleButtonClick, { capture: true, passive: false });
+        
+        // Additional body-level handlers for stubborn mobile browsers
+        document.body.addEventListener('click', handleButtonClick, { capture: true, passive: false });
+        document.body.addEventListener('touchend', handleButtonClick, { capture: true, passive: false });
+    }
+    
+    setupMobileTouchHandlers() {
+        // Specific mobile touch optimization
+        console.log('Setting up mobile touch handlers...');
+        
+        // Disable touch delays and zoom on button areas
+        const buttonContainer = document.querySelector('.counter-wrapper');
+        if (buttonContainer) {
+            buttonContainer.style.touchAction = 'manipulation';
+            buttonContainer.style.webkitTouchCallout = 'none';
+            buttonContainer.style.webkitUserSelect = 'none';
+            buttonContainer.style.userSelect = 'none';
+        }
+        
+        // Force immediate button feedback on touch
+        [this.increaseBtn, this.decreaseBtn].forEach(btn => {
+            if (btn) {
+                btn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    btn.style.transform = 'scale(0.95)';
+                }, { passive: false });
+                
+                btn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    btn.style.transform = 'scale(1)';
+                    
+                    // Trigger appropriate action
+                    if (btn.id === 'increaseButton') {
+                        setTimeout(() => this.increase(), 10);
+                    } else if (btn.id === 'decreaseButton') {
+                        setTimeout(() => this.decrease(), 10);
+                    }
+                }, { passive: false });
+                
+                btn.addEventListener('touchcancel', () => {
+                    btn.style.transform = 'scale(1)';
+                });
+            }
+        });
+    }
+    
+    applyMobileButtonStyles(button) {
+        if (!button) return;
+        
+        const mobileStyles = {
+            'pointer-events': 'auto',
+            'cursor': 'pointer',
+            'z-index': '99999',
+            'position': 'relative',
+            'display': 'flex',
+            'align-items': 'center',
+            'justify-content': 'center',
+            'user-select': 'none',
+            '-webkit-user-select': 'none',
+            '-moz-user-select': 'none',
+            '-ms-user-select': 'none',
+            'touch-action': 'manipulation',
+            '-webkit-touch-callout': 'none',
+            '-webkit-tap-highlight-color': 'transparent',
+            'outline': 'none',
+            'min-width': '48px',
+            'min-height': '48px',
+            'border-radius': '50%',
+            'overflow': 'visible'
+        };
+        
+        Object.entries(mobileStyles).forEach(([property, value]) => {
+            button.style.setProperty(property, value, 'important');
+        });
+        
+        // Ensure child elements don't interfere
+        const children = button.querySelectorAll('*');
+        children.forEach(child => {
+            child.style.setProperty('pointer-events', 'none', 'important');
+            child.style.setProperty('user-select', 'none', 'important');
+            child.style.setProperty('-webkit-user-select', 'none', 'important');
+        });
+        
+        console.log(`Mobile styles applied to button: ${button.id}`);
     }
 
     increase() {
