@@ -30,6 +30,20 @@ class AdvancedCounter {
                 increaseBtn: this.increaseBtn,
                 decreaseBtn: this.decreaseBtn
             });
+            
+            // Try to find elements again after a short delay
+            setTimeout(() => {
+                this.counterValue = document.getElementById('counterValue');
+                this.increaseBtn = document.getElementById('increaseButton');
+                this.decreaseBtn = document.getElementById('decreaseButton');
+                
+                if (this.counterValue && this.increaseBtn && this.decreaseBtn) {
+                    console.log('Elements found on retry, rebinding events...');
+                    this.bindEvents();
+                    this.updateDisplay();
+                }
+            }, 100);
+            
             return;
         }
         
@@ -53,23 +67,80 @@ class AdvancedCounter {
         // Initialize theme
         this.initializeTheme();
         
+        // Set up periodic button check to ensure they remain clickable
+        this.startButtonMonitoring();
+        
         console.log('Advanced Counter initialized successfully!');
     }
 
     bindEvents() {
-        // Counter buttons (essential)
+        // ENHANCED BUTTON LOGIC - Multiple approaches to ensure buttons work on all screen sizes
+        
+        // Method 1: Direct event listeners with enhanced styling
         if (this.increaseBtn) {
-            this.increaseBtn.addEventListener('click', () => {
-                console.log('Increase button clicked');
+            console.log('Adding click listener to increase button');
+            
+            // Remove any existing listeners
+            this.increaseBtn.replaceWith(this.increaseBtn.cloneNode(true));
+            this.increaseBtn = document.getElementById('increaseButton');
+            
+            this.increaseBtn.addEventListener('click', (e) => {
+                console.log('Increase button clicked!', e);
+                e.preventDefault();
+                e.stopPropagation();
                 this.increase();
             });
+            
+            // Additional event types for better compatibility
+            this.increaseBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.increase();
+            });
+            
+            // Ensure button is clickable on all screen sizes
+            this.increaseBtn.style.pointerEvents = 'auto';
+            this.increaseBtn.style.cursor = 'pointer';
+            this.increaseBtn.style.zIndex = '999';
+            this.increaseBtn.style.position = 'relative';
+            this.increaseBtn.style.userSelect = 'none';
+            this.increaseBtn.style.webkitUserSelect = 'none';
+            this.increaseBtn.style.touchAction = 'manipulation';
+        } else {
+            console.error('Increase button not found!');
         }
         
         if (this.decreaseBtn) {
-            this.decreaseBtn.addEventListener('click', () => {
-                console.log('Decrease button clicked');
+            console.log('Adding click listener to decrease button');
+            
+            // Remove any existing listeners
+            this.decreaseBtn.replaceWith(this.decreaseBtn.cloneNode(true));
+            this.decreaseBtn = document.getElementById('decreaseButton');
+            
+            this.decreaseBtn.addEventListener('click', (e) => {
+                console.log('Decrease button clicked!', e);
+                e.preventDefault();
+                e.stopPropagation();
                 this.decrease();
             });
+            
+            // Additional event types for better compatibility
+            this.decreaseBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.decrease();
+            });
+            
+            // Ensure button is clickable on all screen sizes
+            this.decreaseBtn.style.pointerEvents = 'auto';
+            this.decreaseBtn.style.cursor = 'pointer';
+            this.decreaseBtn.style.zIndex = '999';
+            this.decreaseBtn.style.position = 'relative';
+            this.decreaseBtn.style.userSelect = 'none';
+            this.decreaseBtn.style.webkitUserSelect = 'none';
+            this.decreaseBtn.style.touchAction = 'manipulation';
+        } else {
+            console.error('Decrease button not found!');
         }
         
         // Custom input (optional)
@@ -128,6 +199,102 @@ class AdvancedCounter {
         if (this.decreaseBtn) {
             this.decreaseBtn.addEventListener('touchstart', this.handleTouchStart.bind(this));
         }
+        
+        // Event delegation as backup for button clicks (ensures buttons work on all screen sizes)
+        // Method 2: Document-level event delegation
+        document.addEventListener('click', (e) => {
+            const target = e.target;
+            const increaseButton = target.closest('#increaseButton') || (target.id === 'increaseButton');
+            const decreaseButton = target.closest('#decreaseButton') || (target.id === 'decreaseButton');
+            
+            if (increaseButton) {
+                console.log('Increase button clicked via delegation');
+                e.preventDefault();
+                e.stopPropagation();
+                this.increase();
+                return false;
+            } 
+            
+            if (decreaseButton) {
+                console.log('Decrease button clicked via delegation');
+                e.preventDefault();
+                e.stopPropagation();
+                this.decrease();
+                return false;
+            }
+        }, true); // Use capture phase
+        
+        // Method 3: Additional event delegation for touch devices
+        document.addEventListener('touchend', (e) => {
+            const target = e.target;
+            const increaseButton = target.closest('#increaseButton') || (target.id === 'increaseButton');
+            const decreaseButton = target.closest('#decreaseButton') || (target.id === 'decreaseButton');
+            
+            if (increaseButton) {
+                console.log('Increase button touched via delegation');
+                e.preventDefault();
+                e.stopPropagation();
+                this.increase();
+                return false;
+            } 
+            
+            if (decreaseButton) {
+                console.log('Decrease button touched via delegation');
+                e.preventDefault();
+                e.stopPropagation();
+                this.decrease();
+                return false;
+            }
+        }, true);
+        
+        console.log('All event listeners bound successfully');
+        
+        // Method 4: Force button styles to ensure they're clickable on all devices
+        this.ensureButtonsAreClickable();
+    }
+    
+    ensureButtonsAreClickable() {
+        const buttons = [this.increaseBtn, this.decreaseBtn];
+        buttons.forEach(button => {
+            if (button) {
+                // Force clickable styles
+                button.style.setProperty('pointer-events', 'auto', 'important');
+                button.style.setProperty('cursor', 'pointer', 'important');
+                button.style.setProperty('z-index', '9999', 'important');
+                button.style.setProperty('position', 'relative', 'important');
+                button.style.setProperty('display', 'flex', 'important');
+                button.style.setProperty('user-select', 'none', 'important');
+                button.style.setProperty('-webkit-user-select', 'none', 'important');
+                button.style.setProperty('-moz-user-select', 'none', 'important');
+                button.style.setProperty('-ms-user-select', 'none', 'important');
+                button.style.setProperty('touch-action', 'manipulation', 'important');
+                button.style.setProperty('outline', 'none', 'important');
+                
+                // Ensure children don't block clicks
+                const children = button.querySelectorAll('*');
+                children.forEach(child => {
+                    child.style.setProperty('pointer-events', 'none', 'important');
+                });
+            }
+        });
+        
+        console.log('Button styles enforced for all screen sizes');
+    }
+    
+    startButtonMonitoring() {
+        // Monitor buttons every 2 seconds to ensure they remain clickable
+        setInterval(() => {
+            this.ensureButtonsAreClickable();
+        }, 2000);
+        
+        // Also check when window is resized
+        window.addEventListener('resize', () => {
+            setTimeout(() => {
+                this.ensureButtonsAreClickable();
+            }, 100);
+        });
+        
+        console.log('Button monitoring started');
     }
 
     increase() {

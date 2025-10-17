@@ -265,6 +265,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    pointer-events: auto;
+    z-index: 10;
+    user-select: none;
 }
 
 .counter-btn::before {
@@ -317,6 +320,7 @@ body {
     position: relative;
     z-index: 2;
     transition: transform var(--transition-fast);
+    pointer-events: none;
 }
 
 .counter-btn:hover .btn-symbol {
