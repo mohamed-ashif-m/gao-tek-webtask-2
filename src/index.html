@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Counter App</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <!-- Theme Toggle Button -->
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+    </button>
+    
+    <div class="container">
+        <div class="counter-card">
+            <h1 class="title">Counter App</h1>
+            
+            <!-- Main Counter Section -->
+            <div class="counter-wrapper">
+                <button id="decreaseButton" class="counter-btn decrease-btn" aria-label="Decrease counter">
+                    <span class="btn-symbol">−</span>
+                </button>
+                <div class="counter-display">
+                    <span id="counterValue" class="counter-number">0</span>
+                </div>
+                <button id="increaseButton" class="counter-btn increase-btn" aria-label="Increase counter">
+                    <span class="btn-symbol">+</span>
+                </button>
+            </div>
+            
+            <!-- Custom Input Section -->
+            <div class="input-section">
+                <div class="input-wrapper">
+                    <input 
+                        type="number" 
+                        id="customInput" 
+                        placeholder="Enter number to add"
+                        class="custom-input"
+                        min="0"
+                    >
+                    <button id="addCustomButton" class="action-btn add-btn" aria-label="Add custom number">
+                        Add
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Action Buttons Section -->
+            <div class="action-buttons">
+                <button id="saveButton" class="action-btn save-btn" aria-label="Save counter">
+                     Save
+                </button>
+                <button id="resetButton" class="action-btn reset-btn" aria-label="Reset counter">
+                    Reset
+                </button>
+                <button id="deleteButton" class="action-btn delete-btn" aria-label="Delete saved data">
+                    Clear
+                </button>
+            </div>
+            
+            <!-- Info Section -->
+            <div class="counter-info">
+                <p class="counter-label">Current Count</p>
+                <div class="saved-indicator" id="savedIndicator">
+                    <span class="saved-text">Last saved: Never</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span class="toast-message"></span>
+    </div>
+    
+    <script src="scripts/counter.js"></script>
+</body>
+</html>

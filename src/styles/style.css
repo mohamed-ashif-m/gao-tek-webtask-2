@@ -1,0 +1,1005 @@
+/* Amazing Counter App Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Color Palette - Light Theme */
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --warning-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    
+    /* Neutral Colors - Light Theme */
+    --white: #ffffff;
+    --black: #1a1a1a;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --card-bg: #ffffff;
+    --text-primary: #343a40;
+    --text-secondary: #495057;
+    --input-bg: #f8f9fa;
+    --input-border: #dee2e6;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2);
+    
+    /* Transitions & Effects */
+    --transition-fast: 0.2s ease-in-out;
+    --transition-normal: 0.3s ease-in-out;
+    --transition-slow: 0.5s ease-in-out;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 50%;
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+    --primary-gradient: linear-gradient(135deg, #4c63d2 0%, #5a67d8 100%);
+    --secondary-gradient: linear-gradient(135deg, #ed64a6 0%, #f093fb 100%);
+    --success-gradient: linear-gradient(135deg, #38b2ac 0%, #4fd1c7 100%);
+    --danger-gradient: linear-gradient(135deg, #fc8181 0%, #feb2b2 100%);
+    --warning-gradient: linear-gradient(135deg, #f6ad55 0%, #fbd38d 100%);
+    --info-gradient: linear-gradient(135deg, #63b3ed 0%, #90cdf4 100%);
+    
+    --white: #1a202c;
+    --black: #ffffff;
+    --gray-100: #2d3748;
+    --gray-200: #4a5568;
+    --gray-300: #718096;
+    --gray-700: #e2e8f0;
+    --gray-800: #f7fafc;
+    --card-bg: #2d3748;
+    --text-primary: #f7fafc;
+    --text-secondary: #e2e8f0;
+    --input-bg: #4a5568;
+    --input-border: #718096;
+    
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-gradient);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Animated Background */
+.background-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-gradient);
+    z-index: -1;
+}
+
+.background-animation::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(255, 255, 255, 0.03) 20px,
+        rgba(255, 255, 255, 0.03) 40px
+    );
+}
+
+@keyframes backgroundMove {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Container */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Counter Card */
+.counter-card {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border-radius: var(--radius-xl);
+    padding: 3rem 2.5rem;
+    box-shadow: var(--shadow-xl);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-width: 350px;
+    transform: translateY(0);
+    transition: all var(--transition-normal);
+}
+
+.counter-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    transition: left var(--transition-slow);
+}
+
+.counter-card:hover::before {
+    left: 100%;
+}
+
+.counter-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+/* Title */
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--secondary-gradient);
+    border-radius: 2px;
+}
+
+/* Counter Wrapper */
+.counter-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Counter Display */
+.counter-display {
+    background: var(--gray-100);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    box-shadow: inset var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.counter-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--success-gradient);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-normal);
+}
+
+.counter-display:hover::before {
+    transform: scaleX(1);
+}
+
+.counter-number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+    transition: all var(--transition-fast);
+}
+
+.counter-number.animate {
+    transform: scale(1.2);
+    color: #667eea;
+}
+
+/* Counter Buttons */
+.counter-btn {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--white);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all var(--transition-fast);
+}
+
+.counter-btn:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+.decrease-btn {
+    background: var(--danger-gradient);
+}
+
+.decrease-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(250, 112, 154, 0.4);
+}
+
+.decrease-btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.increase-btn {
+    background: var(--success-gradient);
+}
+
+.increase-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(79, 172, 254, 0.4);
+}
+
+.increase-btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.btn-symbol {
+    font-size: 2.5rem;
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+    transition: transform var(--transition-fast);
+}
+
+.counter-btn:hover .btn-symbol {
+    transform: scale(1.1);
+}
+
+/* Counter Info */
+.counter-info {
+    margin-top: 1rem;
+}
+
+.counter-label {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.saved-indicator {
+    margin-top: 0.5rem;
+}
+
+.saved-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: var(--radius-full);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-lg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all var(--transition-normal);
+    z-index: 1000;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-xl);
+}
+
+.theme-icon {
+    transition: transform var(--transition-normal);
+}
+
+/* Input Section */
+.input-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--input-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--input-border);
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.custom-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--input-border);
+    border-radius: var(--radius-md);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all var(--transition-normal);
+    outline: none;
+}
+
+.custom-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.custom-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.action-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    min-width: 100px;
+    color: var(--white);
+    font-family: inherit;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all var(--transition-fast);
+}
+
+.action-btn:active::before {
+    width: 200px;
+    height: 200px;
+}
+
+.save-btn {
+    background: var(--success-gradient);
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+}
+
+.reset-btn {
+    background: var(--warning-gradient);
+    color: rgb(78, 77, 77);
+}
+
+.reset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(246, 173, 85, 0.3);
+}
+
+.delete-btn {
+    background: var(--danger-gradient);
+}
+
+.delete-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(250, 112, 154, 0.3);
+}
+
+.add-btn {
+    background: var(--info-gradient);
+    padding: 1rem 2rem;
+    font-weight: 600;
+    min-width: auto;
+    color: rgb(78, 77, 77);
+}
+
+.add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 179, 237, 0.3);
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    padding: 1rem 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--input-border);
+    z-index: 1000;
+    opacity: 0;
+    transition: all var(--transition-normal);
+    pointer-events: none;
+    max-width: 90vw;
+    text-align: center;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.toast-message {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Responsive Design - Enhanced for All Devices */
+
+/* Extra Small Devices (phones, 320px and up) */
+@media (max-width: 375px) {
+    .theme-toggle {
+        top: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .container {
+        padding: 8px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .counter-card {
+        min-width: 280px;
+        max-width: 300px;
+        padding: 1.5rem 1rem;
+        margin: 10px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .title {
+        font-size: 1.6rem;
+        margin-bottom: 1.2rem;
+        line-height: 1.2;
+    }
+    
+    .counter-wrapper {
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    .counter-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 1.6rem;
+    }
+    
+    .counter-number {
+        font-size: 2.2rem;
+    }
+    
+    .input-section {
+        padding: 1rem;
+        margin: 1.5rem 0;
+    }
+    
+    .input-wrapper {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .custom-input {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .action-buttons {
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .action-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+        min-width: 80px;
+    }
+}
+
+/* Small Devices (landscape phones, 576px and up) */
+@media (min-width: 376px) and (max-width: 575px) {
+    .counter-card {
+        min-width: 320px;
+        max-width: 350px;
+        padding: 2rem 1.5rem;
+    }
+    
+    .title {
+        font-size: 1.9rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .counter-wrapper {
+        gap: 1.2rem;
+        margin-bottom: 1.8rem;
+    }
+    
+    .counter-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+    
+    .counter-number {
+        font-size: 2.8rem;
+    }
+    
+    .input-wrapper {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .action-buttons {
+        gap: 0.8rem;
+    }
+}
+
+/* Medium Devices (tablets, 768px and up) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .counter-card {
+        min-width: 350px;
+        max-width: 450px;
+        padding: 2.5rem 2rem;
+    }
+    
+    .title {
+        font-size: 2.2rem;
+        margin-bottom: 1.8rem;
+    }
+    
+    .counter-wrapper {
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .counter-btn {
+        width: 65px;
+        height: 65px;
+        font-size: 1.9rem;
+    }
+    
+    .counter-number {
+        font-size: 3.2rem;
+    }
+    
+    .input-wrapper {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    
+    .action-buttons {
+        gap: 1rem;
+    }
+}
+
+/* Large Devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .counter-card {
+        padding: 2.5rem 2rem;
+        min-width: 380px;
+        max-width: 450px;
+    }
+    
+    .title {
+        font-size: 2.3rem;
+        margin-bottom: 2rem;
+    }
+    
+    .counter-wrapper {
+        gap: 1.8rem;
+        margin-bottom: 2rem;
+    }
+    
+    .counter-btn {
+        width: 68px;
+        height: 68px;
+        font-size: 2rem;
+    }
+    
+    .btn-symbol {
+        font-size: 2.3rem;
+    }
+    
+    .counter-number {
+        font-size: 3.4rem;
+    }
+}
+
+/* Extra Large Devices (large laptops and desktops, 1200px and up) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .counter-card {
+        min-width: 420px;
+        max-width: 500px;
+        padding: 3rem 2.5rem;
+    }
+    
+    .title {
+        font-size: 2.6rem;
+    }
+    
+    .counter-number {
+        font-size: 3.8rem;
+    }
+    
+    .counter-btn {
+        width: 75px;
+        height: 75px;
+    }
+    
+    .btn-symbol {
+        font-size: 2.6rem;
+    }
+}
+
+/* Extra Extra Large Devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .counter-card {
+        min-width: 450px;
+        max-width: 550px;
+        padding: 3.5rem 3rem;
+    }
+    
+    .title {
+        font-size: 2.8rem;
+    }
+    
+    .counter-number {
+        font-size: 4rem;
+    }
+    
+    .counter-btn {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .btn-symbol {
+        font-size: 2.8rem;
+    }
+}
+
+/* Landscape Orientation Optimizations */
+@media (orientation: landscape) and (max-height: 600px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .counter-card {
+        padding: 1.5rem 2rem;
+        max-height: 90vh;
+        overflow: hidden;
+    }
+    
+    .title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    .counter-wrapper {
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .counter-btn {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .counter-number {
+        font-size: 2.5rem;
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .counter-card {
+        border: 0.5px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .counter-btn {
+        border: 0.5px solid rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Touch Device Optimizations */
+@media (pointer: coarse) {
+    .counter-btn {
+        min-height: 48px;
+        min-width: 48px;
+        padding: 8px;
+    }
+    
+    .counter-btn:hover {
+        transform: translateY(-2px) scale(1.03);
+    }
+}
+
+/* Fine Pointer Devices (Mouse/Trackpad) */
+@media (pointer: fine) {
+    .counter-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+    }
+    
+    .counter-card:hover {
+        transform: translateY(-8px);
+    }
+}
+
+/* Device-Specific Fixes */
+
+/* iPhone SE and similar small screens */
+@media (max-width: 320px) {
+    .counter-card {
+        min-width: 260px;
+        padding: 1.2rem 0.8rem;
+        margin: 5px;
+    }
+    
+    .title {
+        font-size: 1.4rem;
+    }
+    
+    .counter-number {
+        font-size: 2rem;
+    }
+    
+    .counter-btn {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .btn-symbol {
+        font-size: 1.6rem;
+    }
+}
+
+/* Large phones in landscape */
+@media (max-height: 450px) and (orientation: landscape) {
+    .counter-wrapper {
+        flex-direction: row;
+        gap: 2rem;
+    }
+    
+    .counter-card {
+        padding: 1rem 2rem;
+    }
+    
+    .title {
+        font-size: 1.6rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .counter-info {
+        margin-top: 0.5rem;
+    }
+}
+
+/* Foldable Devices */
+@media (min-width: 280px) and (max-width: 653px) and (min-height: 653px) {
+    .counter-card {
+        min-width: 90%;
+        max-width: 400px;
+        padding: 2rem;
+    }
+    
+    .counter-wrapper {
+        gap: 2rem;
+    }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1400px) {
+    .counter-card {
+        min-width: 500px;
+        max-width: 600px;
+        padding: 4rem 3.5rem;
+    }
+    
+    .title {
+        font-size: 3rem;
+    }
+    
+    .counter-number {
+        font-size: 4.5rem;
+    }
+    
+    .counter-btn {
+        width: 85px;
+        height: 85px;
+    }
+    .btn-symbol {
+        font-size: 3rem;
+    }
+}
+
+/* Animation Classes */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Accessibility */
+.counter-btn:focus {
+    outline: 3px solid rgba(102, 126, 234, 0.5);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Performance Optimizations for All Devices */
+.counter-card,
+.counter-btn,
+.counter-number {
+    will-change: transform;
+}
+
+.background-animation {
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* Smooth Scrolling for overflow situations */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Prevent text selection on buttons */
+.counter-btn {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Optimize for battery life on mobile */
+@media (max-width: 768px) {
+    .background-animation::before {
+        animation-duration: 30s; /* Slower animation for mobile */
+    }
+}
